@@ -17,6 +17,8 @@ const usersSchema = require('./schemas/users.schema.json');
 const Ajv = require('ajv');
 const ajv = new Ajv();
 app.use(bodyParser.json());
+var cloudinary = require('cloudinary');
+var cloudinaryStorage = require('multer-storage-cloudinary');
 
 const postingsValidator = ajv.compile(postingsSchema);
 const usersValidator = ajv.compile(usersSchema);
