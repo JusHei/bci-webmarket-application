@@ -1,0 +1,168 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example1.com/example1.json",
+    "type": "object",
+    "title": "Posting schema",
+    "description": "The posting schema of posting.",
+    "default": {},
+    "examples": [
+        {
+            "title": "Puma t-shirt",
+            "description": "Womens size xs t-shirt. Contact for more information.",
+            "category": "clothing",
+            "location": {
+                "city": "Oulu",
+                "country": "Finland",
+                "postalCode": 90160
+            },
+            "price": "3 euros",
+            "deliveryType": {
+                "shipping": true,
+                "pickup": true
+            }
+        }
+    ],
+    "required": [
+        "title",
+        "description",
+        "category",
+        "location",
+        "price",
+        "deliveryType"
+    ],
+    "properties": {
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "The posting title",
+            "description": "Title describes what the user is selling.",
+            "default": "",
+            "examples": [
+                "Puma t-shirt"
+            ]
+        },
+        "description": {
+            "$id": "#/properties/description",
+            "type": "string",
+            "title": "The posting description",
+            "description": "Description is for user to tell more about the item in the posting.",
+            "default": "",
+            "examples": [
+                "Womens size xs t-shirt. Contact for more information."
+            ]
+        },
+        "category": {
+            "$id": "#/properties/category",
+            "type": "string",
+            "title": "The posting category",
+            "description": "The posting category is chosen based on what the user is selling.",
+            "default": "",
+            "examples": [
+                "clothing"
+            ]
+        },
+        "location": {
+            "$id": "#/properties/location",
+            "type": "object",
+            "title": "The posting location",
+            "description": "Tells where the item in the posting is located",
+            "default": {},
+            "examples": [
+                {
+                    "city": "Oulu",
+                    "country": "Finland",
+                    "postalCode": 90160
+                }
+            ],
+            "required": [
+                "city",
+                "country",
+                "postalCode"
+            ],
+            "properties": {
+                "city": {
+                    "$id": "#/properties/location/properties/city",
+                    "type": "string",
+                    "title": "The city",
+                    "description": "The city where the item of the posting is located",
+                    "default": "",
+                    "examples": [
+                        "Oulu"
+                    ]
+                },
+                "country": {
+                    "$id": "#/properties/location/properties/country",
+                    "type": "string",
+                    "title": "The country",
+                    "description": "The country where the item of the posting is located.",
+                    "default": "",
+                    "examples": [
+                        "Finland"
+                    ]
+                },
+                "postalCode": {
+                    "$id": "#/properties/location/properties/postalCode",
+                    "type": "integer",
+                    "title": "The postalCode",
+                    "description": "The postalcode where the item of the posting is located",
+                    "default": 0,
+                    "examples": [
+                        90160
+                    ]
+                }
+            },
+            "additionalProperties": true
+        },
+        "price": {
+            "$id": "#/properties/price",
+            "type": "string",
+            "title": "The price",
+            "description": "The price of the item in posting. Given in string",
+            "default": "",
+            "examples": [
+                "3 euros"
+            ]
+        },
+        "deliveryType": {
+            "$id": "#/properties/deliveryType",
+            "type": "object",
+            "title": "The deliveryType schema",
+            "description": "Tells what options the buyer has for getting the item in posting",
+            "default": {},
+            "examples": [
+                {
+                    "shipping": true,
+                    "pickup": true
+                }
+            ],
+            "required": [
+                "shipping",
+                "pickup"
+            ],
+            "properties": {
+                "shipping": {
+                    "$id": "#/properties/deliveryType/properties/shipping",
+                    "type": "boolean",
+                    "title": "The shipping schema",
+                    "description": "Tells if shipping is an option",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                },
+                "pickup": {
+                    "$id": "#/properties/deliveryType/properties/pickup",
+                    "type": "boolean",
+                    "title": "The pickup schema",
+                    "description": "Tells if pickup is available",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                }
+            },
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true
+}

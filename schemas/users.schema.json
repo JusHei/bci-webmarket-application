@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example2.com/example2.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "username": "JohnDoe",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@example.com",
+            "dateOfBirth": "1996-11-15",
+            "password": "adc123"
+        }
+    ],
+    "required": [
+        "username",
+        "firstName",
+        "lastName",
+        "email",
+        "dateOfBirth",
+        "password"
+    ],
+    "properties": {
+        "username": {
+            "$id": "#/properties/username",
+            "type": "string",
+            "title": "The username schema",
+            "description": "User decides a username for the site.",
+            "default": "",
+            "examples": [
+                "JohnDoe"
+            ]
+        },
+        "firstName": {
+            "$id": "#/properties/firstName",
+            "type": "string",
+            "title": "The firstName schema",
+            "description": "The first name of the user",
+            "default": "",
+            "examples": [
+                "John"
+            ]
+        },
+        "lastName": {
+            "$id": "#/properties/lastName",
+            "type": "string",
+            "title": "The lastName schema",
+            "description": "The last name of the user",
+            "default": "",
+            "examples": [
+                "Doe"
+            ]
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "The email schema",
+            "description": "Email to be used in the site for contact purposes",
+            "default": "",
+            "examples": [
+                "john.doe@example.com"
+            ]
+        },
+        "dateOfBirth": {
+            "$id": "#/properties/dateOfBirth",
+            "type": "string",
+            "title": "Date of birth",
+            "description": "User's date of birth",
+            "default": "",
+            "examples": [
+                "1996-11-15"
+            ]
+        },
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
+            "description": "Password for login",
+            "default": "",
+            "examples": [
+                "adc123"
+            ]
+        }
+    },
+    "additionalProperties": true
+}
