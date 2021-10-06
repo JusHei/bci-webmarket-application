@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 const postingsValidator = ajv.compile(postingsSchema);
 const usersValidator = ajv.compile(usersSchema);
 
+//new comment
 
 let userDB = [];
 let postingsDB = [];
