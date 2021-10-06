@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 const postingsValidator = ajv.compile(postingsSchema);
 const usersValidator = ajv.compile(usersSchema);
 
-
+//for saving users and postings
 let userDB = [];
 let postingsDB = [];
 
@@ -47,21 +47,21 @@ passport.use(new BasicStrategy(
     }
 ));
   
+//users can search postings by id
   app.get('/postings/:postingId', passport.authenticate('jwt', { session: false }), (req, res) => {
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
     if(postingInfo === undefined) {
       res.sendStatus(404);
   } else {
+    //checking if the logged username matches to the username in the posting
       if(postingInfo.sellerName == req.user.username) {
         res.json(postingInfo);
       } else {
         res.sendStatus(401);
       }
-      
     }
-    
   })
-  
+  // users can modify postings
   app.put('/postings/:postingId', upload.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
     
@@ -89,7 +89,7 @@ passport.use(new BasicStrategy(
     
 
   })
-
+// users can delete postings
   app.delete('/postings/:postingId', passport.authenticate('jwt', { session: false }), (req, res) => {
     
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
@@ -103,15 +103,10 @@ passport.use(new BasicStrategy(
       } else {
         res.sendStatus(401);
       }
-      
     }
-    
-  })
-  
-  app.get('/users', passport.authenticate('jwt', {session: false}), (req, res) => {
-    res.json(userDB);
   })
 
+  //users can get all their own postings.  
   app.get('/postings', passport.authenticate('jwt', {session: false}), (req, res) => {
     const result = postingsDB.filter(f => f.sellerName === req.user.username);
     if (result === undefined) {
@@ -122,6 +117,7 @@ passport.use(new BasicStrategy(
     
   })
   
+  //everyone can search postings by category
   app.get('/search/category/:category', (req, res) => {
     const result = postingsDB.filter(f => f.category === req.params.category);
     
@@ -133,6 +129,7 @@ passport.use(new BasicStrategy(
 
   })
 
+  //everyone can search postings by city location
   app.get('/search/locationCity/:location', (req, res) => {
     const result = postingsDB.filter(f => f.location.city === req.params.location);
     
@@ -143,6 +140,7 @@ passport.use(new BasicStrategy(
     }
   })
 
+  //everyone can search postings by country location
   app.get('/search/locationCountry/:location', (req, res) => {
     const result = postingsDB.filter(f => f.location.country === req.params.location);
     
@@ -153,6 +151,7 @@ passport.use(new BasicStrategy(
     }
   })
 
+  //everyone can search postings by postal code
   app.get('/search/locationPostalCode/:location', (req, res) => {
     const result = postingsDB.filter(f => f.location.postalCode === req.params.location);
     
@@ -163,7 +162,7 @@ passport.use(new BasicStrategy(
     }
   })
 
-
+//everyone can search postings by posting date
   app.get('/search/dateOfPosting/:dateOfPosting', (req, res) => {
     const result = postingsDB.filter(f => f.dateOfPosting === req.params.dateOfPosting);
     
@@ -175,6 +174,7 @@ passport.use(new BasicStrategy(
   
   })
 
+  //users can make new postings. Not all info to the posting is coming from the body. Ex.id and date-time
   app.post('/postings', upload.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
    
     var d = new Date();
@@ -194,7 +194,7 @@ passport.use(new BasicStrategy(
         images: req.files,
         deliveryType: req.body.deliveryType
       }
-  
+      //validatinf data from body
       const valid = postingsValidator(newPosting);
 
       if(!valid) {
@@ -205,9 +205,9 @@ passport.use(new BasicStrategy(
       }
 
   })
-
+//create new user
   app.post('/user', (req, res) => {
-      //create new user
+      
       const salt = bcrypt.genSaltSync(6);
       const hashedPassword = bcrypt.hashSync(req.body.password, salt);
       var d = new Date();
@@ -234,6 +234,7 @@ passport.use(new BasicStrategy(
       }
   })
 
+//jwt authentication implementation 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: secrets.jwtSignKey,
@@ -241,7 +242,6 @@ const options = {
   };
 
 passport.use(new JwtStrategy(options, (req, payload, done) => {
-  //posting => posting.postingId === req.params.postingId
     const currentUser = userDB.find(user => user.username == payload.user)
     console.log('user.username: ',userDB.find(user => user.username));
     console.log('payload: ', payload);
@@ -254,6 +254,7 @@ passport.use(new JwtStrategy(options, (req, payload, done) => {
       }
     }));
 
+//user login, http basic
 app.post('/login', passport.authenticate('basic', {session: false}), (req, res) => {
 
     const token = jwt.sign({user: req.user.username}, secrets.jwtSignKey);
