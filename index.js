@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 3000
 const passport = require('passport')
 const BasicStrategy = require('passport-http').BasicStrategy;
 const bodyParser = require('body-parser')
@@ -26,6 +25,7 @@ const usersValidator = ajv.compile(usersSchema);
 let userDB = [];
 let postingsDB = [];
 
+app.set('port', (process.env.PORT || 80));
 
 passport.use(new BasicStrategy(
     (username, password, done) => {
@@ -262,6 +262,6 @@ app.post('/login', passport.authenticate('basic', {session: false}), (req, res) 
     res.json({ token : token})
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  })
+app.listen(app.get('port'), function() {
+    console.log(`Node app is running on port`, app.get('port'));
+  });
