@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 const postingsValidator = ajv.compile(postingsSchema);
 const usersValidator = ajv.compile(usersSchema);
 
-//nkajshfkajsf
 
 let userDB = [];
 let postingsDB = [];
@@ -47,41 +46,6 @@ passport.use(new BasicStrategy(
         }
     }
 ));
-/*
-function getUserInformation(req, res, next) {
-    const userId = parseInt(req.get('user-id'));
-    const userInfo = userDB.find(userDB => userDB.id === userId);
-    if(user.id === undefined) {
-      res.sendStatus(400);
-  } else {
-      req.userInfo = userInfo;
-      next();
-    }
-  }
-  
-  function getPosting(req, res, next) {
-    const postingInfo = postingsDB.find(posting => posting.id === req.params.postingId);
-    if(postingInfo.id === undefined) {
-      res.sendStatus(400);
-  } else {
-      res.postingInfo = postingInfo;
-      next();
-    }
-  }
-
-  app.get('/users/:userId', passport.authenticate('jwt', { session: false }), getUserInformation, (req, res) => {
-    const userInfo = req.userInfo;
-    res.json(userInfo);
-  })
-  
-  app.put('/users/:userId', passport.authenticate('jwt', { session: false }), (req, res) => {
-  })
-  
-  app.delete('/users/:userId', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.send('Hello World!')
-  })
-  */
-  
   
   app.get('/postings/:postingId', passport.authenticate('jwt', { session: false }), (req, res) => {
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
@@ -269,30 +233,6 @@ function getUserInformation(req, res, next) {
         res.sendStatus(201);
       }
   })
-/*
-app.get('/protectedResource', passport.authenticate('basic', { session : false }), (req, res) => {
-    res.send('Succesfully accessed protected resource!');
-})
-
-app.post('/signup', (req, res) => {
-
-    const salt = bcrypt.genSaltSync(6);
-    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
-    const newUser = {
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email
-    }
-
-    userDB.push(newUser);
-    res.sendStatus(201);
-})
-*/
-/*
-/** JWT implement*/
-
-
 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
