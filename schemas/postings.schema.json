@@ -13,7 +13,7 @@
             "location": {
                 "city": "Oulu",
                 "country": "Finland",
-                "postalCode": 90160
+                "postalCode": "90160"
             },
             "price": "3 euros",
             "deliveryType": {
@@ -71,7 +71,7 @@
                 {
                     "city": "Oulu",
                     "country": "Finland",
-                    "postalCode": 90160
+                    "postalCode": "90160"
                 }
             ],
             "required": [
@@ -102,12 +102,12 @@
                 },
                 "postalCode": {
                     "$id": "#/properties/location/properties/postalCode",
-                    "type": "integer",
+                    "type": "string",
                     "title": "The postalCode",
                     "description": "The postalcode where the item of the posting is located",
                     "default": 0,
                     "examples": [
-                        90160
+                        "90160"
                     ]
                 }
             },
