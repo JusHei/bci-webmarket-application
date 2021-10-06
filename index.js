@@ -70,7 +70,7 @@ passport.use(new BasicStrategy(
         res.sendStatus(401);
       }
     }
-  })
+  });
   // users can modify postings
   app.put('/postings/:postingId', parser.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
@@ -95,10 +95,8 @@ passport.use(new BasicStrategy(
         res.sendStatus(401);
       }
   } 
-      
-    
+  });
 
-  })
 // users can delete postings
   app.delete('/postings/:postingId', passport.authenticate('jwt', { session: false }), (req, res) => {
     
@@ -114,7 +112,7 @@ passport.use(new BasicStrategy(
         res.sendStatus(401);
       }
     }
-  })
+  });
 
   //users can get all their own postings.  
   app.get('/postings', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -125,7 +123,7 @@ passport.use(new BasicStrategy(
       res.json(result);
     }
     
-  })
+  });
   
   //everyone can search postings by category
   app.get('/search/category/:category', (req, res) => {
@@ -137,7 +135,7 @@ passport.use(new BasicStrategy(
       res.json(result)
     }
 
-  })
+  });
 
   //everyone can search postings by city location
   app.get('/search/locationCity/:location', (req, res) => {
@@ -148,7 +146,7 @@ passport.use(new BasicStrategy(
     } else {
       res.json(result)
     }
-  })
+  });
 
   //everyone can search postings by country location
   app.get('/search/locationCountry/:location', (req, res) => {
@@ -159,7 +157,7 @@ passport.use(new BasicStrategy(
     } else {
       res.json(result)
     }
-  })
+  });
 
   //everyone can search postings by postal code
   app.get('/search/locationPostalCode/:location', (req, res) => {
@@ -170,7 +168,7 @@ passport.use(new BasicStrategy(
     } else {
       res.json(result)
     }
-  })
+  });
 
 //everyone can search postings by posting date
   app.get('/search/dateOfPosting/:dateOfPosting', (req, res) => {
@@ -182,14 +180,14 @@ passport.use(new BasicStrategy(
       res.json(result)
     }
   
-  })
+  });
 
   //users can make new postings. Not all info to the posting is coming from the body. Ex.id and date-time
   app.post('/postings', parser.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
    
     var d = new Date();
-    var date = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()
-    var time = d.getHours()+ ':' + d.getMinutes()
+    var date = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+    var time = d.getHours()+ ':' + d.getMinutes();
     const newPosting = {
         postingId: uuidv4(),  
         title: req.body.title,
@@ -214,14 +212,14 @@ passport.use(new BasicStrategy(
         res.sendStatus(201)
       }
 
-  })
+  });
 //create new user
   app.post('/user', (req, res) => {
       
       const salt = bcrypt.genSaltSync(6);
       const hashedPassword = bcrypt.hashSync(req.body.password, salt);
       var d = new Date();
-      var signUpDate = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()
+      var signUpDate = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
   
       const newUser = {
           id: uuidv4(),
@@ -237,7 +235,7 @@ passport.use(new BasicStrategy(
       const valid = usersValidator(newUser);
 
       if(!valid) {
-        res.sendStatus(400)
+        res.sendStatus(400);
       } else {
         userDB.push(newUser);
         res.sendStatus(201);
@@ -252,7 +250,7 @@ const options = {
   };
 
 passport.use(new JwtStrategy(options, (req, payload, done) => {
-    const currentUser = userDB.find(user => user.username == payload.user)
+    const currentUser = userDB.find(user => user.username == payload.user);
     console.log('user.username: ',userDB.find(user => user.username));
     console.log('payload: ', payload);
     console.log('current user: ',currentUser);
@@ -269,7 +267,7 @@ app.post('/login', passport.authenticate('basic', {session: false}), (req, res) 
 
     const token = jwt.sign({user: req.user.username}, secrets.jwtSignKey);
   
-    res.json({ token : token})
+    res.json({ token : token});
 })
 
 app.listen(app.get('port'), function() {
