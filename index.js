@@ -9,7 +9,7 @@ const multer  = require('multer')
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const upload = multer({ dest: 'uploads/' })
+//const upload = multer({ dest: 'uploads/' })
 const jwtSecretKey = "mySecretKey";
 const secrets = require('./secrets.json')
 const postingsSchema = require('./schemas/postings.schema.json');
@@ -26,6 +26,14 @@ let userDB = [];
 let postingsDB = [];
 
 app.set('port', (process.env.PORT || 80));
+
+var storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: '', 
+  allowedFormats: ['jpg', 'png'],
+});
+
+var parser = multer({ storage: storage });
 
 passport.use(new BasicStrategy(
     (username, password, done) => {
@@ -62,7 +70,7 @@ passport.use(new BasicStrategy(
     }
   })
   // users can modify postings
-  app.put('/postings/:postingId', upload.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
+  app.put('/postings/:postingId', parser.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
     const postingInfo = postingsDB.find(posting => posting.postingId === req.params.postingId);
     
     if(postingInfo === undefined) {
@@ -175,7 +183,7 @@ passport.use(new BasicStrategy(
   })
 
   //users can make new postings. Not all info to the posting is coming from the body. Ex.id and date-time
-  app.post('/postings', upload.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
+  app.post('/postings', parser.array('photos', 4), passport.authenticate('jwt', { session: false }), (req, res) => {
    
     var d = new Date();
     var date = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()
